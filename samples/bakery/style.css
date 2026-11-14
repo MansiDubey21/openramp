@@ -1,0 +1,24 @@
+body { margin: 0; font-family: Georgia, serif; color: #333; background: #fffdf7; }
+.top { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; background: #fff; }
+.logo { height: 48px; }
+nav a { margin-left: 18px; color: #c9a96e; text-decoration: none; font-size: 15px; }
+.hero { padding: 64px 24px; text-align: center; background: #fff4dc; }
+.hero h1 { font-size: 44px; margin: 0 0 8px; color: #6b3e1e; }
+.tagline { color: #b5a48c; font-size: 18px; }
+.btn-yellow { display: inline-block; margin-top: 16px; padding: 12px 22px; background: #ffd23f; color: #ffffff; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 16px; }
+.btn-yellow:focus { outline: none; } /* common real-world bug: invisible keyboard focus (no axe rule detects it) */
+.menu { padding: 40px 24px; }
+.cards { display: flex; gap: 24px; flex-wrap: wrap; }
+.card { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 16px; width: 260px; }
+.card img { width: 100%; height: 180px; object-fit: cover; border-radius: 6px; }
+.price { color: #e0a96d; font-weight: bold; }
+.fineprint { color: #c8c8c8; font-size: 13px; }
+.order { padding: 40px 24px; background: #fff4dc; }
+form { display: flex; gap: 8px; }
+input, select { padding: 10px; font-size: 15px; }
+button { padding: 8px 14px; background: #6b3e1e; border: 0; border-radius: 4px; }
+button img { width: 18px; height: 18px; }
+footer { padding: 24px; background: #3b2412; }
+.address { color: #6e5a4a; }
+footer a { display: inline-block; width: 28px; height: 28px; margin-right: 8px; }
+footer a img { width: 28px; height: 28px; }

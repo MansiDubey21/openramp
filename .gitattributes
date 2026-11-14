@@ -1,0 +1,8 @@
+# Normalise text files; keep Linux line endings for files used on the VPS (CRLF breaks bash/Caddy).
+* text=auto
+*.sh text eol=lf
+Dockerfile text eol=lf
+Caddyfile text eol=lf
+*.yml text eol=lf
+.dockerignore text eol=lf
+*.png binary
