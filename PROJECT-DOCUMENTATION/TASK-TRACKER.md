@@ -28,7 +28,7 @@ Status labels: Completed and tested · Implemented but not tested · In progress
 | VPS setup script `deploy/vps-setup.sh` | 14 Nov | Implemented but not tested |
 | **Rotate Anthropic API key** (exposed in session output) | ASAP | Completed and tested (user rotated 14 Nov; new key verified by format checks + Models API + live task check, never displayed) |
 | Local git repo + first commit | 14 Nov | Completed and tested (user approved; 49 files, no secrets) |
-| Create GitHub repo + push | 15–16 Nov | Pending (user creates the repo and approves the push) |
+| Create GitHub repo + push | 14 Nov | Completed and tested: github.com/MansiDubey21/openramp (public). Verified via GitHub API: 49 files, no `.env`, no-reply author on all commits |
 | UI polish after real AI runs, demo script | 16 Nov | Pending |
 
 ## Phase 3: Deployment (depends on organizer/purchases)
