@@ -44,7 +44,8 @@ _Actual files as of 2026-11-14 (end of session 2). Status labels: Completed and 
 | `docker-compose.yml` | app + Caddy (automatic HTTPS) | Parses with `docker compose config`. Run not tested |
 | `deploy/vps-setup.sh` | One-time Docker + firewall setup on the Ubuntu/Debian VPS | Implemented but not tested |
 | `Caddyfile` | HTTPS reverse proxy, www redirect, HSTS | Implemented but not tested |
-| `.dockerignore`, `.gitignore` | Keep secrets, tests and docs out of image/repo | Implemented but not tested (no git repo yet) |
+| `.dockerignore`, `.gitignore` | Keep secrets, tests and docs out of image/repo | Completed and tested (`.env`, node_modules, data/ confirmed absent from the commit) |
+| `.gitattributes` | Forces LF line endings for VPS files (sh, Dockerfile, Caddyfile, yml) | Completed and tested (`git ls-files --eol` shows LF) |
 | `.env.example` | Placeholder config (no secrets) | Completed |
 | `README.md` | Repo documentation | Completed |
 | `package.json` | ES modules; scripts start/dev/test | Completed and tested |
@@ -53,4 +54,4 @@ _Actual files as of 2026-11-14 (end of session 2). Status labels: Completed and 
 @anthropic-ai/sdk 1.8.0 · @axe-core/playwright 4.14.0 (axe-core 4.14.0) · dotenv 18.0.10 · express 5.3.0 · express-rate-limit 8.7.4 · helmet 8.3.0 · ipaddr.js 2.5.0 · nodemailer 10.5.0 · playwright 1.65.1 (Chromium installed) · zod 4.6.7
 
 ## Environment
-Node v26.13.0 · npm 11.20.0 · git 2.56.0 · Docker CLI 29.9.3 (**engine cannot run: hardware virtualization disabled**; app runs natively with `npm start`) · `gddy` not on PATH from Claude's shell · not yet a git repository
+Node v26.13.0 · npm 11.20.0 · git 2.56.0 · Docker CLI 29.9.3 (**engine cannot run: hardware virtualization disabled**; app runs natively with `npm start`) · `gddy` not on PATH from Claude's shell · **local git repository** on branch `main` (first commit 2026-11-14; no remote yet)

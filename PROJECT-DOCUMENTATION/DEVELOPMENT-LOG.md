@@ -53,3 +53,5 @@
 - Added `deploy/vps-setup.sh` (untested). Updated `.dockerignore`.
 - Tests: **22/22**.
 - User rotated the API key. New key verified without displaying it: format OK, Models API accepts it (Sonnet 5.5, Haiku 5.5), live task check on the bakery worked ($0.0001). Incident closed.
+- User approved git. `git init -b main`. Pre-commit checks: `.env`, node_modules and data/ not staged, and no `sk-ant-…` pattern in any staged file. Added `.gitattributes` (LF for VPS files) after Windows CRLF warnings. First commit of 49 files.
+- **Problem:** the PowerShell here-string was not accepted by `git commit -F -` (nothing committed). **Fixed** by using a temp message file. **Problem:** PS 5.1 `Set-Content -Encoding utf8` added a BOM to the commit message. **Fixed** by amending the unpushed commit with a BOM-free UTF-8 file. Verified LF storage with `git ls-files --eol`.
