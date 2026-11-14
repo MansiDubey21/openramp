@@ -10,8 +10,8 @@ Audience: hackathon judges (recorded video and/or live finale). Uses the bundled
 | 1:15 | Click **▶ Play** under "What a blind customer hears" | Let it say "...combo box... button". "That's all a blind customer hears. They can't order." |
 | 1:35 | Click **हिन्दी** in "Explain these results" | "Owners get a plain-language summary in Hindi or English, with numbers from the scan, not invented by AI." |
 | 1:50 | Click **Propose fixes with AI** | "Claude uses tools: exact contrast maths, and it *looks* at images to write descriptions. The keyboard test adds its own fix. Every fix is explained, and the owner decides." |
-| 2:15 | Click **Apply selected fixes to a copy and re-test** | "We never touch the live site. The copy is re-scanned: 21 → 0. And the same task again: all three customers *blocked → can complete*." Play the **After** transcript: "Subscribe, button". |
-| 2:45 | Show the downloads + disclaimer | "The owner gets the fixed HTML and a report. We're honest: automated testing isn't a certificate." |
-| 2:55 | Contact form | "Hosted on GoDaddy, our own domain over HTTPS, and the contact form delivers to our Titan mailbox." _(After deployment.)_ |
+| 2:15 | Click **Apply selected fixes to a copy and re-test** | "OpenRamp never touches the live site. The copy is re-scanned: 21 → 0. And the same task again: all three customers *blocked → can complete*." Play the **After** transcript: "Subscribe, button". |
+| 2:45 | Show the downloads + disclaimer | "The owner gets the fixed HTML and a report. I've kept it honest: automated testing isn't a certificate." |
+| 2:55 | Contact form | "I've hosted it on GoDaddy, on my own domain over HTTPS, and the contact form delivers to my Titan mailbox." _(After deployment.)_ |
 
 **Before recording:** check the API key works (`/api/health` shows `ai: true`). Speech uses the computer's voices, so test the Hindi voice on the recording machine.

@@ -1,5 +1,5 @@
 # OpenRamp: Project Brief
-**GoDaddy Inclusive Innovation Hackathon 2026 · Individual entry · Mansi Dubey**
+**GoDaddy Inclusive Innovation Hackathon 2026 · Individual entry (team size: 1) · Mansi Dubey**
 
 > **Can every customer complete the one thing your business needs them to do?**
 > OpenRamp tests a small-business website the way customers with disabilities use it, has AI propose fixes the owner approves, and proves the result by re-testing.
@@ -19,7 +19,7 @@
 
 ## 2. What OpenRamp does
 1. **Scan:** enter a public URL. The open-source **axe-core** engine checks WCAG 2.0/2.1/2.2 A/AA rules in a sandboxed browser. Every finding shows the exact element as evidence.
-2. **Customer Task Check (our core idea):** the owner types the task customers come for, e.g. *"Order a custom cake"*. OpenRamp then **measures** three customer experiences:
+2. **Customer Task Check (my core idea):** the owner types the task customers come for, e.g. *"Order a custom cake"*. OpenRamp then **measures** three customer experiences:
    - **Keyboard-only:** real Tab-key presses. Is each step reachable? Is focus visible? (Measured by comparing screenshots, which catches `outline: none`, a barrier rule scanners can't detect.)
    - **Blind (screen reader):** what is announced at each step, from the browser's accessibility tree. It can be played aloud: *"button"* before, *"Subscribe, button"* after.
    - **Low vision:** contrast failures on the task's elements.
@@ -29,7 +29,7 @@
 6. **Plain-language summary in English or Hindi** for owners, with numbers taken from the measurements. Downloadable fixed HTML and report.
 
 ## 3. What is different (stated carefully)
-AI code-fix suggestions already exist in enterprise tools (e.g. Siteimprove, BrowserStack) and WordPress plugins, and free screen-reader simulators exist for manual exploration. In our research **we did not find a tool that**:
+AI code-fix suggestions already exist in enterprise tools (e.g. Siteimprove, BrowserStack) and WordPress plugins, and free screen-reader simulators exist for manual exploration. In my research **I did not find a tool that**:
 - starts from the owner's **business task in plain words**,
 - **measures** whether keyboard, screen-reader and low-vision customers can complete it,
 - and **re-verifies that same task after owner-approved fixes**, with a before/after audio transcript,
