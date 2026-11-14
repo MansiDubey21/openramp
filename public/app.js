@@ -53,7 +53,7 @@
       state.taskFixes = [];
       state.task = null;
       stopSpeaking();
-      for (const id of ['task-result', 'task-after', 'fix-list', 'needs-human']) $(id).replaceChildren();
+      for (const id of ['task-result', 'task-after', 'fix-list', 'needs-human', 'explain-1', 'explain-2']) $(id).replaceChildren();
       $('task-input').value = '';
       renderResults(data);
       setStatus('status', `Scan complete: ${data.before.issueCount} issue${data.before.issueCount === 1 ? '' : 's'} found.`, 'success');
@@ -192,6 +192,54 @@
     const u = data.usage;
     $('usage').textContent = u ? `AI cost for this run: about $${u.estimatedCostUsd.toFixed(3)} (${u.inputTokens + u.cacheReadTokens + u.cacheWriteTokens} input / ${u.outputTokens} output tokens)` : '';
   }
+
+  // ---------- Plain-language owner summary (English / Hindi) ----------
+  function speakText(text, lang, btn) {
+    if (window.speechSynthesis.speaking) {
+      stopSpeaking();
+      btn.textContent = '▶ Play';
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
+    u.rate = 0.95;
+    u.onend = () => { btn.textContent = '▶ Play'; };
+    btn.textContent = '■ Stop';
+    window.speechSynthesis.speak(u);
+  }
+
+  document.querySelectorAll('.explain-btn').forEach((b) =>
+    b.addEventListener('click', async () => {
+      const lang = b.dataset.lang;
+      const out = $(b.dataset.target);
+      stopSpeaking();
+      setStatus('status', lang === 'hi' ? 'Writing a plain-language summary in Hindi…' : 'Writing a plain-language summary…', 'loading');
+      busy(b, true);
+      try {
+        const { summary } = await api(`/api/scan/${encodeURIComponent(state.scanId)}/summary`, { lang });
+        const box = el('div', { lang: summary.bcp47 },
+          el('h4', { text: summary.headline }),
+          el('p', { text: summary.summary }),
+          el('ol', {}, summary.next_steps.map((s) => el('li', { text: s }))),
+        );
+        const footer = el('p', { class: 'small muted' }, `Written by Claude from the measured results above (about $${summary.usage.estimatedCostUsd.toFixed(4)}). Numbers come from the scan, not the AI.`);
+        const kids = [box];
+        if ('speechSynthesis' in window) {
+          const play = el('button', { type: 'button', class: 'btn btn-secondary btn-small', text: '▶ Play' });
+          const text = [summary.headline, summary.summary, ...summary.next_steps].join('. ');
+          play.addEventListener('click', () => speakText(text, lang, play));
+          kids.push(play);
+        }
+        kids.push(footer);
+        out.replaceChildren(...kids);
+        setStatus('status', 'Summary ready.', 'success');
+      } catch (e) {
+        setStatus('status', e.message, 'error');
+      } finally {
+        busy(b, false);
+      }
+    }),
+  );
 
   // ---------- Customer task check ----------
   function stopSpeaking() {

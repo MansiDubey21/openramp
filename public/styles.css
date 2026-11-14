@@ -109,6 +109,11 @@ pre { background: #f4f6f8; padding: 10px; border-radius: 6px; white-space: pre-w
 .task-compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
 .task-after-card { border: 2px solid var(--brand); border-radius: var(--radius); padding: 16px 18px; margin: 18px 0; background: #f7fbfc; }
 .task-after-card h3 { margin-top: 0; }
+.explain-card { margin: 18px 0; }
+.explain-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; }
+.explain-out:not(:empty) { margin-top: 12px; border-left: 5px solid var(--brand); background: #f7fbfc; padding: 12px 16px; border-radius: 4px; }
+.explain-out h4 { margin: 0 0 6px; font-size: 1.1rem; }
+.explain-out p { margin: 6px 0; }
 .select-row { margin: 14px 0; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .select-row .small { margin-left: auto; }
 .fix-list { list-style: none; padding: 0; margin: 0; }

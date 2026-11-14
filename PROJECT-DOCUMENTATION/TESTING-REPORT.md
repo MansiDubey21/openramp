@@ -85,6 +85,20 @@ Bakery demo in Chromium: 21 fixes displayed with plain-language explanations and
 | Docker: compose file parses; base image tag exists on MCR | Pass (static only) |
 | Docker image build/run | **Not tested**: no virtualization on this PC; will be tested on the VPS |
 
+## Contact form and owner summary (session 6, 2026-11-14). `npm test`: **29/29 pass**
+| Test | Result |
+|---|---|
+| Contact: health reports configured with real (non-placeholder) settings | Pass |
+| Contact: valid message delivered via **authenticated SMTP** to the mailbox. Subject, Reply-To and body correct | Pass |
+| Contact: header injection (`\r\nBcc:` in name) neutralised. Only the business mailbox receives it | Pass |
+| Contact: honeypot submission not sent | Pass |
+| Summary: facts built from real results (incl. task and re-scan). Unsupported language rejected. Malformed AI output rejected | Pass |
+| **Live** Hindi summary (bakery, before fixes): natural Hindi, explains "screen reader". Numbers used [21, 7, 13, 5, 1] all match the scan | Pass |
+| **Live** Hindi summary (after fixes): numbers [21, 7, 13, 2] match (21 resolved, 2 needs-a-person) | Pass |
+| **Live** English summary: numbers [21, 7, 13, 1, 9] match | Pass |
+| UI with summaries shown: axe 0 violations. `lang="hi"` set on Hindi text. No page errors | Pass |
+| Note: the first live run's "English" check read the Hindi text because *the test* didn't wait for the new content. Re-run with a correct wait: Pass | Test-script issue, not an app bug |
+
 ## Not yet tested
 | Item | Blocker |
 |---|---|

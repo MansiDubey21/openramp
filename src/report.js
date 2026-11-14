@@ -62,6 +62,12 @@ pre{white-space:pre-wrap;background:#f4f4f4;padding:.5rem;font-size:.85rem}.note
 <p>Issues found: <strong>${before.issueCount}</strong> (critical ${before.byImpact.critical}, serious ${before.byImpact.serious}, moderate ${before.byImpact.moderate}, minor ${before.byImpact.minor}).
 Items needing manual review: ${before.needsReviewCount}.</p>
 ${after ? `<p>After the approved fixes were applied to a copy and re-scanned: <strong>${after.issueCount}</strong> issues remain.</p>` : ''}
+${Object.values(session.summaries || {})
+  .map(
+    (sm) => `<section lang="${esc(sm.bcp47)}"><h2>${esc(sm.headline)}</h2><p>${esc(sm.summary)}</p><ol>${sm.next_steps.map((x) => `<li>${esc(x)}</li>`).join('')}</ol>
+<p lang="en"><small>Plain-language summary written by Claude from the measured results.</small></p></section>`,
+  )
+  .join('')}
 ${taskHtml}
 ${compRows ? `<h2>Before and after</h2><table><thead><tr><th>Rule</th><th>Before</th><th>After</th></tr></thead><tbody>${compRows}</tbody></table>` : ''}
 ${fixes ? `<h2>Approved fixes</h2><table><thead><tr><th>Rule</th><th>Element</th><th>Change</th><th>Why it matters</th></tr></thead><tbody>${fixes}</tbody></table>` : ''}

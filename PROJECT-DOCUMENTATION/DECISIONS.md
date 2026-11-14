@@ -20,7 +20,9 @@
 | 2026-11-14 | Haiku 5.5 for task-element picking | Simple classification step. About $0.0001 per task | Final |
 | 2026-11-14 | Invisible-focus fix is code-generated from a fixed CSS template, still owner-approved | Mechanical fix needs no AI. Fixed template keeps it injection-safe | Final |
 | 2026-11-14 | Added an invisible-focus bug to the bakery demo | Demonstrates a barrier rule scanners miss. Mirrors a real pattern (confirmed on the UW demo) | Final |
-| 2026-11-14 | Hindi owner report: deferred (stretch) | Task check prioritised. Time reserved for deployment | Pending |
+| 2026-11-14 | Hindi owner report: deferred (stretch) | Task check prioritised. Time reserved for deployment | Superseded (built the same day while waiting for credit) |
+| 2026-11-14 | Owner summary: English + Hindi only, facts built in code, Haiku writes the words | Only languages whose output could be checked. Numbers can't be invented | Final |
+| 2026-11-14 | Test contact delivery against a local `smtp-server` (dev dep), not an external test-mail service | No data sent to third parties. Real SMTP auth path exercised | Final |
 | 2026-11-14 | Develop and test natively on Windows. The first Docker build happens on the VPS | Virtualization disabled. User declined BIOS changes. Docker files kept ready and statically checked | Final |
 | 2026-11-14 | Never run `docker compose config` with a real `.env` | It printed the API key in session output (incident). Key rotation requested | Final |
 | 2026-11-14 | W3C "BAD" demo page as second live-demo target | Public site designed to be inaccessible, so it's safe and legitimate to scan in a demo | Final |

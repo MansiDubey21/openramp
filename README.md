@@ -21,6 +21,10 @@ The owner types the task customers come for (e.g. *"Order a custom cake"*). Clau
 
 After the owner approves fixes, the same task is re-tested on the fixed copy, e.g. *keyboard: blocked → can complete*.
 
+Owners can also get a **plain-language summary in English or Hindi** (Claude Haiku). The facts and numbers come from the measurements, and the AI only explains them.
+
+See [PROJECT-BRIEF.md](PROJECT-BRIEF.md) for the full project brief.
+
 ## How it works
 1. **Scan:** Playwright (headless Chromium) loads the page and runs axe-core against WCAG 2.0/2.1/2.2 A and AA rules. Every finding includes the element's selector and HTML as evidence.
 2. **Propose:** Claude (`claude-sonnet-5-5`) receives only the real findings and uses tools: `check_contrast`, `suggest_accessible_color` (computed in code), `view_image` (vision for alt text), and `submit_fixes` (strict JSON schema). The server re-validates every fix against an allow-list.

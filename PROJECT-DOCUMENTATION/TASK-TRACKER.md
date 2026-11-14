@@ -22,7 +22,9 @@ Status labels: Completed and tested · Implemented but not tested · In progress
 | Dockerfile / compose / Caddy | 14 Nov | Implemented but not tested (Docker not running) |
 | Real AI test on 10+ cases | 15 Nov | Completed and tested (14 Nov) |
 | Customer Task Check (differentiator) | 15 Nov | Completed and tested (14 Nov) |
-| Hindi owner report (stretch) | 18 Nov | Pending |
+| Hindi owner summary | 18 Nov | Completed and tested (14 Nov) |
+| Contact form end-to-end test (local SMTP) | 15 Nov | Completed and tested (14 Nov) |
+| Project brief draft + demo script | 19 Nov | Completed (draft, 14 Nov). Add live URL after deploy |
 | Docker build + run locally | 15 Nov | Blocked (virtualization disabled; user chose not to change BIOS). **Replaced by:** native Windows run (Completed and tested) + first container build on the VPS |
 | Static Docker checks (compose parses, base image tag exists) | 14 Nov | Completed and tested |
 | VPS setup script `deploy/vps-setup.sh` | 14 Nov | Implemented but not tested |
@@ -51,6 +53,6 @@ Core MVP code is about 1.5 days ahead of plan, which leaves buffer for deploymen
 |---|---|
 | `ANTHROPIC_API_KEY` in local `.env` | Completed and tested (verified without revealing) |
 | Start Docker Desktop | Blocked (not needed: development continues on Node.js) |
-| Organizer GoDaddy credit confirmation / VPS in cart | Pending (unverified) |
+| Organizer GoDaddy credit confirmation / VPS in cart | Pending (checked 14 Nov: no email, cart empty). **No purchases until confirmed** |
 | Exact submission closing time on 20 Nov | Pending (unverified) |
 | `gddy` CLI not on PATH in Claude's shell | Blocked (low priority until deploy) |

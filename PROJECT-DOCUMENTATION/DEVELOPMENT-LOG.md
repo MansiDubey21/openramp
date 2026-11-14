@@ -56,4 +56,15 @@
 - User approved git. `git init -b main`. Pre-commit checks: `.env`, node_modules and data/ not staged, and no `sk-ant-…` pattern in any staged file. Added `.gitattributes` (LF for VPS files) after Windows CRLF warnings. First commit of 49 files.
 - **Problem:** the PowerShell here-string was not accepted by `git commit -F -` (nothing committed). **Fixed** by using a temp message file. **Problem:** PS 5.1 `Set-Content -Encoding utf8` added a BOM to the commit message. **Fixed** by amending the unpushed commit with a BOM-free UTF-8 file. Verified LF storage with `git ls-files --eol`.
 - Remote `origin` = github.com/MansiDubey21/openramp (public). Before pushing, re-signed both unpushed commits with the user's GitHub no-reply address (repo-local `user.email`; global config unchanged) using `git rebase --root --exec "git commit --amend --no-edit --reset-author"`. Verified: personal email absent from history, file content identical to the originals, `.env` not in any commit, no key patterns. **Not pushed yet** (awaiting user approval).
+- User approved the push (see below).
+
+## 2026-11-14: Session 6 (waiting for credit; local development)
+- User: no organizer email, cart empty. No purchases. Continue locally.
+- Contact form: `npm i -D smtp-server`. `tests/contact.test.js` runs the real server against a local SMTP server: 4/4 pass.
+- Built `src/ownerSummary.js` + `POST /api/scan/:id/summary` + UI "Explain in plain words: English / हिन्दी" (results and before/after steps, `lang` attribute, speech playback with hi-IN voice) + report section. `tests/summary.test.js`: 3/3.
+- Live checks: Hindi and English summaries read and verified. All numbers match the scan. UI axe 0.
+- Wrote `PROJECT-BRIEF.md` (for judges) and `DEMO-SCRIPT.md`.
+- `npm test`: **29/29**.
+
+## 2026-11-14 (earlier): push
 - User approved the push. `git push -u origin main` succeeded (3 commits). Verified via the GitHub API: repo public, 49 files, `.env` and node_modules absent, all commits authored with the no-reply address.

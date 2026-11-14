@@ -11,9 +11,10 @@ _Actual files as of 2026-11-14 (end of session 2). Status labels: Completed and 
 | `src/contrast.js` | WCAG contrast maths (tool functions for Claude) | none | Completed and tested |
 | `src/fixAgent.js` | Claude tool-use agent + server-side fix validation (cap 40/rule, 120 total, skipped elements counted) | @anthropic-ai/sdk, zod | Completed and tested (10 live cases, 0 rejected fixes) |
 | `src/taskCheck.js` | **Customer Task Check**: AI picks task elements (Haiku), then measured keyboard/focus, screen-reader and contrast checks, a code-generated focus fix, and a re-check after fixes | @anthropic-ai/sdk, zod, Chromium DevTools protocol | Completed and tested (5 automated + live cases) |
+| `src/ownerSummary.js` | Plain-language owner summary in English/Hindi (Haiku). Facts built in code from measured results | @anthropic-ai/sdk, zod | Completed and tested (3 automated + live; numbers verified against the scan) |
 | `src/report.js` | Before/after comparison, downloadable HTML report (incl. task section), disclaimer | none | Completed and tested (downloaded and checked in browser flow) |
 | `src/sessions.js` | In-memory scan sessions (TTL 60 min, max 30) | none | Completed and tested (via e2e) |
-| `src/contact.js` | Contact form → SMTP (Titan). Placeholder settings are treated as "not configured" | nodemailer, zod | Validation, honeypot and placeholder detection tested. **Real email delivery Pending** (needs mailbox) |
+| `src/contact.js` | Contact form → SMTP (Titan). Placeholder settings are treated as "not configured" | nodemailer, zod | Completed and tested end to end against a local SMTP server (auth, delivery, Reply-To, header-injection, honeypot). **Titan delivery Pending** (needs mailbox) |
 
 ## Front end
 | Path | Purpose | Status |
@@ -33,6 +34,10 @@ _Actual files as of 2026-11-14 (end of session 2). Status labels: Completed and 
 | `scripts/eval-cases.js` | 10-case live evaluation → `data/eval-*.json` | Completed and tested ($0.77 run) |
 | `scripts/try-task.js` | Task check before/after on the bakery demo | Completed and tested |
 | `tests/task.test.js` | Task check measurements with stubbed AI, id validation, selector injection | Completed and tested (5/5) |
+| `tests/contact.test.js` | Real server → nodemailer → local SMTP server (dev dependency `smtp-server`) | Completed and tested (4/4) |
+| `tests/summary.test.js` | Owner summary facts, language validation, malformed AI output | Completed and tested (3/3) |
+| `PROJECT-BRIEF.md` | Submission project brief for judges | Completed (draft; live URL to add after deployment) |
+| `PROJECT-DOCUMENTATION/DEMO-SCRIPT.md` | 3-minute demo walkthrough | Completed (draft) |
 | `tests/unit.test.js` | SSRF, URL validation, contrast, fix validation, comparison, contact validation | Completed and tested (7/7) |
 | `tests/e2e.test.js` | Real server: scan, SSRF via API, error paths, headers | Completed and tested (6/6) |
 | `tests/apply.test.js` | Apply → re-scan, injection safety, OpenRamp self-scan | Completed and tested (3/3) |
@@ -51,6 +56,7 @@ _Actual files as of 2026-11-14 (end of session 2). Status labels: Completed and 
 | `package.json` | ES modules; scripts start/dev/test | Completed and tested |
 
 ## Dependencies (npm ls, 2026-11-14; npm audit: 0 vulnerabilities)
+Dev only: smtp-server 3.21.4 (contact-form test).
 @anthropic-ai/sdk 1.8.0 · @axe-core/playwright 4.14.0 (axe-core 4.14.0) · dotenv 18.0.10 · express 5.3.0 · express-rate-limit 8.7.4 · helmet 8.3.0 · ipaddr.js 2.5.0 · nodemailer 10.5.0 · playwright 1.65.1 (Chromium installed) · zod 4.6.7
 
 ## Environment

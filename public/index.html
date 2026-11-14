@@ -50,6 +50,14 @@
         <div id="summary" class="summary-grid"></div>
         <p class="disclaimer" id="disclaimer"></p>
 
+        <div class="explain-card">
+          <p class="explain-row"><strong>Explain these results in plain words:</strong>
+            <button type="button" class="btn btn-secondary btn-small explain-btn" data-lang="en" data-target="explain-1">English</button>
+            <button type="button" class="btn btn-secondary btn-small explain-btn" data-lang="hi" data-target="explain-1" lang="hi">हिन्दी</button>
+          </p>
+          <div id="explain-1" class="explain-out"></div>
+        </div>
+
         <div class="task-card" id="task-card">
           <h3 id="task-heading">Can every customer complete your most important task?</h3>
           <p class="muted small">Tell us what customers come to this page to do. OpenRamp finds the buttons and fields involved, then really tests them: it presses the Tab key like a keyboard user, reads them the way a screen reader does, and checks contrast for low-vision customers.</p>
@@ -106,6 +114,13 @@
           <tbody id="compare-body"></tbody>
         </table>
         <div id="task-after"></div>
+        <div class="explain-card">
+          <p class="explain-row"><strong>Explain the before-and-after in plain words:</strong>
+            <button type="button" class="btn btn-secondary btn-small explain-btn" data-lang="en" data-target="explain-2">English</button>
+            <button type="button" class="btn btn-secondary btn-small explain-btn" data-lang="hi" data-target="explain-2" lang="hi">हिन्दी</button>
+          </p>
+          <div id="explain-2" class="explain-out"></div>
+        </div>
         <p class="disclaimer" id="disclaimer-2"></p>
         <h3>Preview of the fixed copy</h3>
         <iframe id="preview" title="Preview of the fixed copy of the page" sandbox="" loading="lazy"></iframe>

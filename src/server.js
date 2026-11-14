@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import { rateLimit } from 'express-rate-limit';
 import { fetchMainDocument, scanDocument, applyFixesToHtml, createFetcher, closeBrowser, withDocumentPage, SAMPLE_ORIGIN } from './scanner.js';
 import { checkTaskOnPage, recheckTaskOnPage, TaskCheckError, TaskInputSchema } from './taskCheck.js';
+import { writeOwnerSummary, SummaryError, LangSchema } from './ownerSummary.js';
 import { SafeFetchError } from './safeFetch.js';
 import { proposeFixes, FixAgentError } from './fixAgent.js';
 import { createSession, getSession } from './sessions.js';
@@ -57,7 +58,7 @@ async function withScanSlot(fn) {
 
 function sendError(res, e) {
   if (e instanceof SafeFetchError) return res.status(400).json({ error: e.message, code: e.code });
-  if (e instanceof FixAgentError || e instanceof TaskCheckError) {
+  if (e instanceof FixAgentError || e instanceof TaskCheckError || e instanceof SummaryError) {
     return res.status(e.code === 'NOT_CONFIGURED' ? 503 : e.code === 'NO_ELEMENTS' ? 400 : 502).json({ error: e.message, code: e.code });
   }
   if (e?.code === 'BUSY') return res.status(503).json({ error: 'The scanner is busy with other sites. Please try again in a moment.' });
@@ -128,6 +129,21 @@ app.post('/api/scan/:id/task', limiter(10, 10), async (req, res) => {
       );
     }
     res.json({ task: publicTask(s.task), taskFixes: s.taskFixes });
+  } catch (e) {
+    sendError(res, e);
+  }
+});
+
+// Plain-language owner summary (English / Hindi) of the REAL results so far.
+app.post('/api/scan/:id/summary', limiter(10, 10), async (req, res) => {
+  const s = getSession(req.params.id);
+  if (!s) return res.status(404).json({ error: 'This scan has expired. Please scan again.' });
+  const lang = LangSchema.safeParse(req.body?.lang);
+  if (!lang.success) return res.status(400).json({ error: 'Unsupported language.' });
+  try {
+    const summary = await writeOwnerSummary(s, lang.data);
+    s.summaries = { ...(s.summaries || {}), [lang.data]: summary };
+    res.json({ summary });
   } catch (e) {
     sendError(res, e);
   }
