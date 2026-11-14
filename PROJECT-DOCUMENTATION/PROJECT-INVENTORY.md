@@ -20,7 +20,7 @@ _Actual files as of 2026-11-14 (end of session 2). Status labels: Completed and 
 | Path | Purpose | Status |
 |---|---|---|
 | `public/index.html` | Single-page UI: scan, results, fixes, verify, how-it-works, contact | Completed and tested (axe: 0 issues on initial state; screenshots desktop and mobile) |
-| `public/styles.css` | Responsive, high-contrast styles | Completed and tested (visual check) |
+| `public/styles.css` | Premium navy/teal theme (redesigned 14 Nov): AA contrast, responsive (1080/900/640 px), reduced-motion support | Completed and tested (screenshots desktop/tablet/mobile, axe 0, no overflow) |
 | `public/app.js` | UI logic (textContent only, CSP-safe): scan, task check with speech playback, merged fix list, verify | Completed and tested (full live browser flow; audio playback not verifiable headless) |
 | `public/favicon.svg` | Icon | Completed |
 

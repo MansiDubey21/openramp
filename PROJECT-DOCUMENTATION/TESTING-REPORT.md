@@ -99,6 +99,17 @@ Bakery demo in Chromium: 21 fixes displayed with plain-language explanations and
 | UI with summaries shown: axe 0 violations. `lang="hi"` set on Hindi text. No page errors | Pass |
 | Note: the first live run's "English" check read the Hindi text because *the test* didn't wait for the new content. Re-run with a correct wait: Pass | Test-script issue, not an app bug |
 
+## UI redesign regression check (session 7, 2026-11-14)
+| Check | Result |
+|---|---|
+| `npm test` (incl. OpenRamp self-scan, 0 issues) | 29/29 pass |
+| Live flow on the running server: scan → task check → 22 fixes → apply → verify → report download | Pass (21 → 0; task blocked → can complete ×3) |
+| Stepper state 1 → 2 → 3, `aria-current="step"` | Pass |
+| axe-core with every panel rendered | 0 violations |
+| Horizontal overflow at 820 px and 390 px | None |
+| Visible keyboard focus on nav button, URL field, Scan, Demo | Pass |
+| Bugs found and fixed during review | Mobile input icon misplaced. Sticky header covered headings. `[hidden]` could be overridden by CSS display |
+
 ## Not yet tested
 | Item | Blocker |
 |---|---|

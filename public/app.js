@@ -16,9 +16,16 @@
     return node;
   }
 
+  const statusTimers = {};
   function setStatus(target, message, kind = '') {
     const box = $(target);
-    box.className = `status ${kind}`;
+    if (box.dataset.base === undefined) box.dataset.base = box.className; // keep e.g. "status toast"
+    box.className = `${box.dataset.base} ${kind}`.trim();
+    clearTimeout(statusTimers[target]);
+    // Floating toast: success messages fade away; errors and progress stay until replaced.
+    if (kind === 'success' && box.classList.contains('toast')) {
+      statusTimers[target] = setTimeout(() => box.replaceChildren(), 6000);
+    }
     box.replaceChildren();
     if (kind === 'loading') box.append(el('span', { class: 'spinner', 'aria-hidden': 'true' }));
     if (message) box.append(message);
@@ -36,6 +43,18 @@
     if (!btn) return;
     btn.disabled = on;
     btn.setAttribute('aria-busy', String(on));
+  }
+
+  // Progress stepper: 1 = scan, 2 = review fixes, 3 = verify. Steps before `current` are marked done.
+  function setStep(current) {
+    const nav = $('stepper');
+    nav.hidden = false;
+    nav.querySelectorAll('li').forEach((li) => {
+      const n = Number(li.dataset.step);
+      li.classList.toggle('done', n < current);
+      if (n === current) li.setAttribute('aria-current', 'step');
+      else li.removeAttribute('aria-current');
+    });
   }
 
   const IMPACTS = ['critical', 'serious', 'moderate', 'minor'];
@@ -58,6 +77,7 @@
       renderResults(data);
       setStatus('status', `Scan complete: ${data.before.issueCount} issue${data.before.issueCount === 1 ? '' : 's'} found.`, 'success');
       $('results').hidden = false;
+      setStep(1);
       $('results-title').focus();
     } catch (e) {
       setStatus('status', e.message, 'error');
@@ -87,9 +107,10 @@
     $('report-link-1').href = reportHref;
     $('report-link-2').href = reportHref;
 
+    const dot = () => el('span', { class: 'sev-dot', 'aria-hidden': 'true' });
     const stats = [el('div', { class: 'stat total' }, el('span', { class: 'num', text: r.issueCount }), el('span', { class: 'lbl', text: 'issues found' }))];
-    for (const imp of IMPACTS) stats.push(el('div', { class: 'stat' }, el('span', { class: 'num', text: r.byImpact[imp] || 0 }), el('span', { class: 'lbl', text: `${impactLabel[imp]}` })));
-    stats.push(el('div', { class: 'stat' }, el('span', { class: 'num', text: r.needsReviewCount }), el('span', { class: 'lbl', text: 'need manual review' })));
+    for (const imp of IMPACTS) stats.push(el('div', { class: `stat sev-${imp}` }, el('span', { class: 'num', text: r.byImpact[imp] || 0 }), el('span', { class: 'lbl' }, dot(), impactLabel[imp])));
+    stats.push(el('div', { class: 'stat sev-review' }, el('span', { class: 'num', text: r.needsReviewCount }), el('span', { class: 'lbl' }, dot(), 'Need manual review')));
     $('summary').replaceChildren(...stats);
 
     const list = r.violations.map((v) =>
@@ -111,6 +132,7 @@
     );
     $('issues').replaceChildren(...(list.length ? list : [el('p', { text: 'No automatically detectable issues. Great start! A manual check is still recommended.' })]));
     $('propose-btn').hidden = r.issueCount === 0;
+    $('propose-btn').closest('.cta-bar').hidden = r.issueCount === 0;
   }
 
   // "wcag412" -> "4.1.2"; level tags like "wcag2a" are dropped.
@@ -137,6 +159,7 @@
       renderFixes(data);
       setStatus('status', `${data.fixes.length} fix${data.fixes.length === 1 ? '' : 'es'} proposed. Please review them.`, 'success');
       $('fixes').hidden = false;
+      setStep(2);
       $('fixes-title').focus();
     } catch (e) {
       setStatus('status', e.message, 'error');
@@ -176,6 +199,7 @@
       ),
     );
     $('apply-btn').hidden = all.length === 0;
+    $('apply-btn').closest('.cta-bar').hidden = all.length === 0;
   }
 
   function renderFixNotes(data) {
@@ -378,6 +402,7 @@
       const c = data.comparison;
       setStatus('status', `Re-test complete: ${c.beforeTotal} issues before, ${c.afterTotal} after.`, 'success');
       $('verify').hidden = false;
+      setStep(3);
       $('verify-title').focus();
     } catch (e) {
       setStatus('status', e.message, 'error');

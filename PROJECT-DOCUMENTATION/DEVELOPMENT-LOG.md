@@ -65,6 +65,39 @@
 - Live checks: Hindi and English summaries read and verified. All numbers match the scan. UI axe 0.
 - Wrote `PROJECT-BRIEF.md` (for judges) and `DEMO-SCRIPT.md`.
 - `npm test`: **29/29**.
+- User reviewed PROJECT-BRIEF.md: changed "our/we" to "my/I" (2 places), added "(team size: 1)", kept the name. Demo script: 3 lines changed to "I/my", or "OpenRamp" where it describes app behaviour. User approved; pushed 3 commits (`d47b71d..45e50ae`). Verified via the GitHub API: 54 files, no `.env`, no-reply author, updated brief wording live.
+
+## 2026-11-14: Session 7 (premium UI redesign)
+- User asked for a premium SaaS-style redesign, with no new framework and no functional changes.
+- Inspected all element IDs and classes used by `app.js` and the tests, and kept every one.
+- `public/index.html` restructured:
+  - Navy hero with an "Example result" product preview (decorative, `aria-hidden`, labelled as an example).
+  - Scan card and trust strip.
+  - Sticky 3-step progress stepper.
+  - Panel headers, call-to-action bars, a browser-frame preview.
+  - How-it-works with icons and a stat band.
+  - Two-column contact section and a new footer.
+- `public/styles.css` rewritten:
+  - Navy/teal palette with AA contrast, type scale, cards and shadows.
+  - Metric cards with severity colours, fix cards that highlight when approved, before/after cards.
+  - Floating status toast with a progress bar.
+  - Animations disabled under `prefers-reduced-motion`.
+  - Responsive at 1080, 900 and 640 px.
+- `public/app.js` (additive):
+  - `setStatus` keeps base classes (toast) and auto-hides success after 6 s.
+  - `setStep()` stepper.
+  - Severity classes and dots on metric cards.
+  - Call-to-action bars hidden when empty.
+- Fixes found during visual review:
+  - Global `[hidden]{display:none!important}` (CSS display rules could reveal hidden UI).
+  - Mobile globe icon fell outside the input (wrapped in `.input-wrap`).
+  - `scroll-padding-top` raised to 140px for header + stepper.
+  - Preview centred on tablet.
+- Removed an invented promise ("I usually reply within a day") from the contact copy.
+- Verified:
+  - Full live flow (scan → task → AI fixes 22 → apply → 21→0, all 3 customer groups blocked → can complete). Stepper 1→2→3. Report download.
+  - axe 0 violations with all panels shown. No horizontal overflow at 820/390 px. Focus rings visible. No console errors.
+  - `npm test` 29/29.
 
 ## 2026-11-14 (earlier): push
 - User approved the push. `git push -u origin main` succeeded (3 commits). Verified via the GitHub API: repo public, 49 files, `.env` and node_modules absent, all commits authored with the no-reply address.
