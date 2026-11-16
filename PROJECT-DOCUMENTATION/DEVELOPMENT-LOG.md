@@ -99,5 +99,20 @@
   - axe 0 violations with all panels shown. No horizontal overflow at 820/390 px. Focus rings visible. No console errors.
   - `npm test` 29/29.
 
+## 2026-11-16: Session 8 (local restart + deployment preparation)
+- Restarted locally (`npm start`). 24/24 frontend and API checks passed. The user confirmed all 8 browser tests.
+- Deployment prep:
+  - compose: added `init: true`, log rotation, `mem_limit 4g`, Caddy `depends_on: service_healthy`, HTTP/3 UDP port.
+  - `.env.example` documents all env vars, including the optional model overrides.
+  - New `deploy/deploy.sh`.
+- Validated:
+  - compose (temp folder, example env only).
+  - Base image facts from the registry (Node 26, amd64, pwuser).
+  - Container rehearsal (`npm ci --omit=dev`, prod run, health + scan).
+  - bash syntax.
+  - Secret scan of all history and GitHub.
+  - `npm test` 29/29.
+- Wrote the full runbook in DEPLOYMENT-NOTES.md. Nothing deployed or purchased.
+
 ## 2026-11-14 (earlier): push
 - User approved the push. `git push -u origin main` succeeded (3 commits). Verified via the GitHub API: repo public, 49 files, `.env` and node_modules absent, all commits authored with the no-reply address.

@@ -46,8 +46,9 @@ _Actual files as of 2026-11-14 (end of session 2). Status labels: Completed and 
 | Path | Purpose | Status |
 |---|---|---|
 | `Dockerfile` | Playwright base image (tag verified to exist), non-root user, health check | Implemented but not tested (no Docker on this PC: virtualization disabled; first build will be on the VPS) |
-| `docker-compose.yml` | app + Caddy (automatic HTTPS) | Parses with `docker compose config`. Run not tested |
-| `deploy/vps-setup.sh` | One-time Docker + firewall setup on the Ubuntu/Debian VPS | Implemented but not tested |
+| `docker-compose.yml` | app + Caddy (automatic HTTPS). `init`, log rotation, 4 GB memory, Caddy waits for a healthy app | Validated (`config --quiet` with example env). Run not tested (no local Docker) |
+| `deploy/vps-setup.sh` | One-time Docker + firewall setup on the Ubuntu/Debian VPS | Implemented but not tested (bash syntax OK) |
+| `deploy/deploy.sh` | Per-deploy: `.env` check without printing values, pull, build, health wait, DNS/HTTPS check | Implemented but not tested (bash syntax OK) |
 | `Caddyfile` | HTTPS reverse proxy, www redirect, HSTS | Implemented but not tested |
 | `.dockerignore`, `.gitignore` | Keep secrets, tests and docs out of image/repo | Completed and tested (`.env`, node_modules, data/ confirmed absent from the commit) |
 | `.gitattributes` | Forces LF line endings for VPS files (sh, Dockerfile, Caddyfile, yml) | Completed and tested (`git ls-files --eol` shows LF) |

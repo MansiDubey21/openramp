@@ -1,31 +1,43 @@
 # Production stack for the GoDaddy VPS: the app plus Caddy (automatic HTTPS via Let's Encrypt).
-# Usage on the server:  docker compose up -d --build
+# Usage on the server:  bash deploy/deploy.sh   (or: docker compose up -d --build)
+# Never run "docker compose config" here: it prints every value from .env, including secrets.
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"           # rotate logs so they can't fill the disk
+    max-file: "3"
+
 services:
   app:
     build: .
     restart: unless-stopped
+    init: true                # reaps Chromium child processes cleanly
     env_file: .env            # secrets live only in the server's .env (never in git)
     environment:
       TRUST_PROXY: "1"        # behind Caddy: use the real client IP for rate limits
     shm_size: "1gb"           # Chromium needs shared memory
-    mem_limit: 3g
+    mem_limit: 4g             # VPS has 8 GB; leaves room for Caddy and the OS
     expose:
       - "3000"
+    logging: *logging
 
   caddy:
     image: caddy:2
     restart: unless-stopped
     depends_on:
-      - app
+      app:
+        condition: service_healthy   # uses the HEALTHCHECK in the Dockerfile
     ports:
       - "80:80"
       - "443:443"
+      - "443:443/udp"         # HTTP/3
     environment:
       DOMAIN: ${DOMAIN:?Set DOMAIN in .env, e.g. DOMAIN=example.com}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
+      - caddy_data:/data      # keeps HTTPS certificates across restarts
       - caddy_config:/config
+    logging: *logging
 
 volumes:
   caddy_data:
