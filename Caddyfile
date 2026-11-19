@@ -1,10 +1,15 @@
-# Caddy obtains and renews HTTPS certificates automatically once DNS points at this server.
+# Caddy obtains and renews HTTPS certificates (Let's Encrypt) automatically once DNS points at this server.
+# Security headers (CSP, HSTS, nosniff, ...) are set by the app itself (helmet), so they are not repeated here.
 {$DOMAIN} {
 	encode gzip
-	header Strict-Transport-Security "max-age=31536000"
 	reverse_proxy app:3000
 }
 
 www.{$DOMAIN} {
+	redir https://{$DOMAIN}{uri} permanent
+}
+
+# Plain-HTTP requests for any other host (e.g. the server's IP address): send visitors to the real domain.
+:80 {
 	redir https://{$DOMAIN}{uri} permanent
 }
