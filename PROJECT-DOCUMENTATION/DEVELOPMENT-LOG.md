@@ -109,6 +109,17 @@
 - Opened http://localhost:3000 for the user's review. Nothing deployed, purchased or pushed.
 - User asked for a full feature review against Docker. Ran an end-to-end browser review (see TESTING-REPORT). Fixed: the mobile compare table, the mobile stepper wrap, and plain-language network errors. Test runner now sequential with a 60 s server wait (load from Docker Desktop). `npm test` 30/30. Rebuilt the app image with the fixes (dependency layers cached).
 
+## 2026-11-19: Session 10 (deployment started)
+- User approved: "approved, push and deploy". Pushed `f32dfa5` (verified on GitHub: 56 files, no `.env`).
+- Created the SSH key `C:\Users\Rahul\.ssh\openramp_vps` (ed25519, no passphrase so automation can use it; private key readable only by the user and admins). Note: PowerShell 5.1 drops empty `""` arguments; the empty passphrase was verified via cmd.exe.
+- `gddy` CLI still not on PATH. Using the godaddy.com UI instead (not a blocker).
+- Next: the user checks the VPS cart total ($0 expected) and approves checkout.
+- VPS active (68.178.168.73, Ubuntu 24.04.5, 4 vCPU / 7.8 GB, 190 GB free). The user installed the SSH key (`~/.ssh` was missing; guided install). Key login OK, host key pinned (`SHA256:Z1Oino3V…`).
+- Read-only checks: Docker 29.7.1 and Compose 5.4 already installed; passwordless sudo; `~/openramp` already a clean clone at `f32dfa5`; `.env` + `.env.save` were mode 664 (now 600, both kept); port 2224 = GoDaddy agent `nydus-ex-api`.
+- Changes: `openramp` added to the docker group. ufw enabled allowing OpenSSH, 2224/tcp (GoDaddy agent), 80, 443/tcp+udp (fresh SSH login verified after enabling).
+- IP mode (no domain yet): created the server-only `docker-compose.ip.yml` (app on port 80, `TRUST_PROXY` unset because there is no proxy). Built the image on the server. The user added the API key to the server `.env` themselves and started the container (healthy).
+- **Bug:** the site rendered unstyled at http://68.178.168.73. **Root cause:** helmet's default CSP includes `upgrade-insecure-requests`, so the browser requested `/styles.css` and `/app.js` via https:// and nothing listens on 443 yet (localhost was unaffected because browsers treat it as secure). **Fix:** `upgradeInsecureRequests: null` in `src/server.js` (Caddy does the HTTP→HTTPS redirect in production) + e2e regression test. Verified over plain HTTP on a non-localhost IP: 275 CSS rules loaded, JS works, 0 failed requests. `npm test` 30/30.
+
 ## 2026-11-16: Session 8 (local restart + deployment preparation)
 - Restarted locally (`npm start`). 24/24 frontend and API checks passed. The user confirmed all 8 browser tests.
 - Deployment prep:

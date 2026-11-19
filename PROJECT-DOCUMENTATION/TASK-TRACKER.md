@@ -36,7 +36,8 @@ Status labels: Completed and tested · Implemented but not tested · In progress
 ## Phase 3: Deployment (depends on organizer/purchases)
 | Task | Target | Status |
 |---|---|---|
-| VPS provisioned, SSH, Docker | 17 Nov | Blocked (organizer confirmation) |
+| SSH key for the VPS (`~/.ssh/openramp_vps`) | 19 Nov | Completed and tested (key opens, matches .pub) |
+| VPS provisioned, SSH, Docker | 19 Nov | In progress (user reports credits and VPS available; checkout pending approval) |
 | Domain purchase + DNS A record | 17 Nov | Blocked (needs approval and credit) |
 | HTTPS via Caddy | 17 Nov | Pending |
 | Titan mailbox + test email + live contact form | 18 Nov | Blocked (needs purchase) |

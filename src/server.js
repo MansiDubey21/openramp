@@ -34,6 +34,10 @@ app.use(
         objectSrc: ["'none'"],
         baseUri: ["'self'"],
         formAction: ["'self'"],
+        // helmet adds "upgrade-insecure-requests" by default. When the site is served over plain HTTP
+        // (e.g. http://SERVER_IP before a domain/HTTPS exists) it makes browsers request CSS/JS via
+        // https:// and fail. HTTP→HTTPS redirection is done by Caddy in production instead.
+        upgradeInsecureRequests: null,
       },
     },
   }),

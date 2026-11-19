@@ -64,6 +64,8 @@ test('security headers present on the home page', async () => {
   const res = await fetch(`${BASE}/`);
   assert.equal(res.status, 200);
   assert.match(res.headers.get('content-security-policy') || '', /script-src 'self'/);
+  // Regression: this directive broke all CSS/JS when the site was served over plain HTTP (VPS IP mode).
+  assert.doesNotMatch(res.headers.get('content-security-policy') || '', /upgrade-insecure-requests/);
   assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
   assert.equal(res.headers.get('x-powered-by'), null);
 });
