@@ -28,7 +28,8 @@ exec 9>"$STATE/lock"; flock -n 9 || exit 0                # never run twice at t
 # ---------- 1. Is DNS ready? ----------
 server_ip=$(curl -fsS -4 --max-time 10 https://api.ipify.org || true)
 [ -n "$server_ip" ] || { quiet "Could not determine this server's public IP."; exit 1; }
-a_record() { dig +short +time=5 +tries=2 A "$1" @"$2" 2>/dev/null | grep -E '^[0-9.]+$' | sort | tr '\n' ' ' | sed 's/ $//'; }
+# "|| true": a name that does not resolve yet must give an empty answer, not abort the script (set -e + pipefail)
+a_record() { { dig +short +time=5 +tries=2 A "$1" @"$2" 2>/dev/null | grep -E '^[0-9.]+$' | sort | tr '\n' ' ' | sed 's/ $//'; } || true; }
 apex_g=$(a_record "$DOMAIN_NAME" 8.8.8.8); apex_c=$(a_record "$DOMAIN_NAME" 1.1.1.1)
 www_g=$(a_record "www.$DOMAIN_NAME" 8.8.8.8)
 if [ "$apex_g" != "$server_ip" ] || [ "$apex_c" != "$server_ip" ]; then
