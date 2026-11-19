@@ -1,5 +1,31 @@
 # Deployment Notes: GoDaddy Docker VPS (Option B)
 
+## ✅ CURRENT STATUS (2026-11-19, 11:05 UTC): LIVE in "IP mode"
+| Item | Value |
+|---|---|
+| Live URL | **http://68.178.168.73** (plain HTTP; HTTPS comes with the domain) |
+| GitHub | https://github.com/MansiDubey21/openramp (`main` @ `14ebcf9`) |
+| VPS | GoDaddy, Ubuntu 24.04.5, 4 vCPU / 7.8 GB, user `openramp`, SSH key `~/.ssh/openramp_vps` (host key `SHA256:Z1Oino3VAXpVq569xADfN2IuIBmtqCEn8QMXrtEgeyw`) |
+| Running | `openramp-app-1`: healthy, `0.0.0.0:80→3000`, restart `unless-stopped`, Docker enabled on boot, ~158 MB RAM |
+| Started with | `cd ~/openramp && docker compose -f docker-compose.yml -f docker-compose.ip.yml up -d --build app` |
+| Server-only file | `docker-compose.ip.yml` (untracked): app on port 80, `TRUST_PROXY` unset (no proxy). Caddy is **not** running in IP mode |
+| Firewall (ufw) | active: OpenSSH, 2224/tcp (**GoDaddy agent `nydus-ex-api`, do not remove**), 80, 443/tcp+udp |
+| Secrets | `~/openramp/.env` (600) with the API key added by the user; `.env.save` (600) kept at the user's request |
+| Not done yet | Domain + DNS, HTTPS (Caddy), Titan mailbox, contact-form SMTP, so the contact form honestly reports "not configured" |
+
+**Redeploy after a code change:** push to GitHub, then on the VPS:
+`cd ~/openramp && git pull --ff-only && docker compose -f docker-compose.yml -f docker-compose.ip.yml up -d --build app`
+
+**Switch to the domain + HTTPS later:**
+1. Set `DOMAIN` in `.env`.
+2. `docker compose -f docker-compose.yml -f docker-compose.ip.yml down`.
+3. `bash deploy/deploy.sh` (full stack with Caddy).
+
+**Issue fixed during deployment:** the page was unstyled at the IP because helmet's default CSP `upgrade-insecure-requests` made browsers fetch CSS/JS over https (nothing on 443). Removed in `14ebcf9`.
+
+---
+*(Original plan, written 2026-11-16 before the VPS existed, below.)*
+
 **Status (2026-11-16):** Nothing deployed. Nothing purchased. Waiting for organizer credit confirmation. Deployment files are ready and validated as far as possible without Docker locally.
 
 ## 1. What will run on the VPS

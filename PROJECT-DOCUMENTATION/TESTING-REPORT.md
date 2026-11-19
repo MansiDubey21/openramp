@@ -143,6 +143,29 @@ Browser end-to-end on http://localhost:3000 (container): **25/27 checks pass. Th
 
 **Test-infrastructure issue found:** with Docker Desktop running, server startup took ~17 s (was 1–2 s), so parallel test files timed out (10 false failures). Fix: `npm test` now runs files one at a time (`--test-concurrency=1`) and test servers get 60 s to start. Result **30/30**.
 
+## LIVE deployment verification: http://68.178.168.73 (2026-11-19)
+**API / assets (20/20 pass):**
+- Homepage 200. No `upgrade-insecure-requests`, other security headers kept.
+- styles.css, app.js, favicon, bakery page/CSS/image all 200.
+- Health `ai:true`.
+- Scans: demo 21, real URL 46 (Chromium on the VPS).
+- SSRF blocked: 127.0.0.1, 169.254.169.254, localhost.
+- Task check, Hindi summary, contact 503 (no mailbox) and 400 (invalid), 404 path.
+
+**Browser (all pass after re-check):**
+- Styled: 275 CSS rules, navy hero.
+- Nav links, JavaScript, demo scan, Hindi, custom cake task.
+- AI fixes 22 ($0.061). Apply 21 → 0, task blocked → can complete ×3. Preview.
+- 3 downloads. Keyboard focus ring. axe 0 violations.
+- Tablet and mobile styled with no sideways scroll.
+
+**Re-checked "failures" (not bugs):**
+- Contact test read the interim "Sending…" text. The final message is correct.
+- Downloads log `net::ERR_ABORTED`, which is normal for link→download (files complete, no error).
+- Chrome console notes the COOP header is ignored over plain HTTP. Harmless, and goes away with HTTPS.
+
+**Server:** container healthy, 0 restarts, not OOM-killed, 0 errors in log. An external `docker compose up` recreated it at 11:02 UTC (not a crash).
+
 ## Not yet tested
 | Item | Blocker |
 |---|---|

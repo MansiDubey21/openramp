@@ -37,7 +37,10 @@ Status labels: Completed and tested · Implemented but not tested · In progress
 | Task | Target | Status |
 |---|---|---|
 | SSH key for the VPS (`~/.ssh/openramp_vps`) | 19 Nov | Completed and tested (key opens, matches .pub) |
-| VPS provisioned, SSH, Docker | 19 Nov | In progress (user reports credits and VPS available; checkout pending approval) |
+| VPS provisioned, SSH, Docker | 19 Nov | Completed and tested (68.178.168.73, key login, Docker, ufw) |
+| App live on VPS IP (http://68.178.168.73) | 19 Nov | Completed and tested (20 API + full browser checks) |
+| Domain + DNS + HTTPS (Caddy) | 19–20 Nov | Pending (domain purchase needs user approval) |
+| Titan mailbox + live contact form | 19–20 Nov | Pending (purchase needs user approval) |
 | Domain purchase + DNS A record | 17 Nov | Blocked (needs approval and credit) |
 | HTTPS via Caddy | 17 Nov | Pending |
 | Titan mailbox + test email + live contact form | 18 Nov | Blocked (needs purchase) |
