@@ -39,7 +39,9 @@ Status labels: Completed and tested · Implemented but not tested · In progress
 | SSH key for the VPS (`~/.ssh/openramp_vps`) | 19 Nov | Completed and tested (key opens, matches .pub) |
 | VPS provisioned, SSH, Docker | 19 Nov | Completed and tested (68.178.168.73, key login, Docker, ufw) |
 | App live on VPS IP (http://68.178.168.73) | 19 Nov | Completed and tested (20 API + full browser checks) |
-| Domain + DNS + HTTPS (Caddy) | 19–20 Nov | Pending (domain purchase needs user approval) |
+| HTTPS (Caddy + Let's Encrypt) live | 19 Nov | Completed and tested (https://68-178-168-73.sslip.io, 23/23) |
+| openramp.in DNS → VPS | 19–20 Nov | Blocked: not yet in the `.in` registry (RDAP 404). Then A @ / CNAME www in GoDaddy DNS (user's GoDaddy login) |
+| Auto-switch cron for openramp.in | 19 Nov | Blocked: needs the user's approval (safety classifier) |
 | Titan mailbox + live contact form | 19–20 Nov | Pending (purchase needs user approval) |
 | Domain purchase + DNS A record | 17 Nov | Blocked (needs approval and credit) |
 | HTTPS via Caddy | 17 Nov | Pending |

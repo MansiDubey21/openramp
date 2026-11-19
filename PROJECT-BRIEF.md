@@ -4,7 +4,8 @@
 > **Can every customer complete the one thing your business needs them to do?**
 > OpenRamp tests a small-business website the way customers with disabilities use it, has AI propose fixes the owner approves, and proves the result by re-testing.
 
-- **Live app:** _to be added after deployment (GoDaddy VPS + own domain, HTTPS)_
+- **Live app (HTTPS, Let's Encrypt, GoDaddy VPS):** https://68-178-168-73.sslip.io
+- **Own domain:** https://openramp.in (bought on GoDaddy). The site moves there automatically once the domain's registration and DNS are active; a verified, one-command switch with automatic rollback is in place.
 - **Code:** https://github.com/MansiDubey21/openramp
 
 ---
@@ -47,9 +48,9 @@ It also complements GoDaddy's journey: Airo can build a site, and OpenRamp is th
 Cost control: the cheapest suitable model per step, prompt caching, effort settings, and cost shown per run (about **$0.06** for the bakery demo's fixes, about **$0.0001** per task check).
 
 ## 5. How GoDaddy technology is used
-- **Hosting:** Docker container on a **GoDaddy VPS**, with Caddy for automatic HTTPS. _(Deployment pending organizer credit confirmation.)_
-- **Domain:** bought on GoDaddy, DNS pointed at the VPS. _(Pending.)_
-- **Titan Business Email:** the site's contact form sends to the domain mailbox over authenticated SMTP. _(Code tested end to end against a local SMTP server; Titan delivery pending.)_
+- **Hosting: live.** Docker on a **GoDaddy VPS** (Ubuntu 24.04, 4 vCPU / 8 GB). The app runs as a non-root container behind Caddy, which provides automatic Let's Encrypt HTTPS, HTTP→HTTPS redirects, and gzip. ufw firewall is on.
+- **Domain:** `openramp.in` was bought on GoDaddy. It switches over as soon as the domain's registration and DNS are active. _(At the time of writing, the `.in` registry had not yet published it.)_
+- **Titan Business Email:** the site's contact form sends to the domain mailbox over authenticated SMTP. _(Code tested end to end against a local SMTP server. The live form honestly reports "not configured" until the Titan mailbox exists.)_
 
 ## 6. Results so far (measured, 14 Nov 2026)
 - **10 real pages** (W3C and University of Washington accessibility demos, Wikipedia, GOV.UK, example.com, bundled demo):
@@ -60,6 +61,7 @@ Cost control: the cheapest suitable model per step, prompt caching, effort setti
 - **Task check, real page:** found invisible keyboard focus on 5 checkboxes of a university demo form (confirmed: the page CSS sets `input:focus { outline: none }`). axe-core reported nothing for it.
 - **Bakery demo task "Order a custom cake":** all 3 customer groups **blocked → can complete** after approved fixes.
 - OpenRamp's own interface: **0** axe-core violations.
+- **Live production check (19 Nov 2026, HTTPS):** 23/23 end-to-end browser checks pass on the deployed site: styling, navigation, real and demo scans, Hindi summary, task check, AI fixes (21 → 0), downloads, contact form, tablet and mobile layouts, 0 console errors.
 
 ## 7. Engineering and security
 - **SSRF protection:** every DNS answer is checked at connect time (defeats DNS rebinding). Private, loopback, cloud-metadata and IPv6-local ranges are blocked. Redirects are re-validated. Size, time and request limits apply.

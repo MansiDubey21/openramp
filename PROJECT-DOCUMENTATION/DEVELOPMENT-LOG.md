@@ -118,6 +118,16 @@
 - Read-only checks: Docker 29.7.1 and Compose 5.4 already installed; passwordless sudo; `~/openramp` already a clean clone at `f32dfa5`; `.env` + `.env.save` were mode 664 (now 600, both kept); port 2224 = GoDaddy agent `nydus-ex-api`.
 - Changes: `openramp` added to the docker group. ufw enabled allowing OpenSSH, 2224/tcp (GoDaddy agent), 80, 443/tcp+udp (fresh SSH login verified after enabling).
 - IP mode (no domain yet): created the server-only `docker-compose.ip.yml` (app on port 80, `TRUST_PROXY` unset because there is no proxy). Built the image on the server. The user added the API key to the server `.env` themselves and started the container (healthy).
+- 11:10–11:25 UTC: the user reported buying openramp.in and asked for full production. Findings:
+  - openramp.in is NXDOMAIN on Google/Cloudflare and at the `.in` TLD nameservers. The NIXI RDAP gives 404 (google.in 200). Not registered/active yet.
+  - openramp.com belongs to someone else (registered 2000).
+- Chose Caddy (already in the stack, auto Let's Encrypt) over adding Nginx.
+- Caddyfile: removed the duplicate HSTS; added a `:80` catch-all redirect to the domain. Tested in the local Docker stack.
+- New `deploy/go-live.sh`: DNS gate via 8.8.8.8/1.1.1.1, `.env` backup + `DOMAIN` line only, switch, real-cert verification, auto-rollback to IP mode, per-domain markers.
+- A TLS-ALPN test on port 443 proved Let's Encrypt issuance without touching the live app.
+- Switched production to HTTPS at 68-178-168-73.sslip.io in 19 s. Verified: 23/23 browser checks + headers + redirects.
+- Installing the cron auto-switch for openramp.in was **blocked by the safety classifier**. Reported to the user instead of working around it.
+- Updated README and PROJECT-BRIEF with the live HTTPS URL; openramp.in is described as pending activation.
 - **Bug:** the site rendered unstyled at http://68.178.168.73. **Root cause:** helmet's default CSP includes `upgrade-insecure-requests`, so the browser requested `/styles.css` and `/app.js` via https:// and nothing listens on 443 yet (localhost was unaffected because browsers treat it as secure). **Fix:** `upgradeInsecureRequests: null` in `src/server.js` (Caddy does the HTTP→HTTPS redirect in production) + e2e regression test. Verified over plain HTTP on a non-localhost IP: 275 CSS rules loaded, JS works, 0 failed requests. `npm test` 30/30.
 
 ## 2026-11-16: Session 8 (local restart + deployment preparation)

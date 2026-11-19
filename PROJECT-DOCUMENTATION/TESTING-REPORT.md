@@ -166,6 +166,32 @@ Browser end-to-end on http://localhost:3000 (container): **25/27 checks pass. Th
 
 **Server:** container healthy, 0 restarts, not OOM-killed, 0 errors in log. An external `docker compose up` recreated it at 11:02 UTC (not a crash).
 
+## Production HTTPS verification: https://68-178-168-73.sslip.io (2026-11-19, 11:20 UTC)
+**Certificate:** Let's Encrypt (YE1), CN=68-178-168-73.sslip.io, valid to 2027-02-17.
+
+**Redirects:**
+- `http://domain` → 308 https.
+- `http://68.178.168.73/demo` → 301 `https://domain/demo`.
+- `https://www.domain` → 301 apex.
+
+**Headers:**
+- CSP (no `upgrade-insecure-requests`).
+- **Exactly 1** HSTS (`max-age=31536000; includeSubDomains`; the duplicate from Caddy was removed).
+- nosniff, X-Frame-Options SAMEORIGIN, Referrer-Policy no-referrer, COOP/CORP same-origin.
+- gzip.
+
+**Browser end-to-end: 23/23 pass:**
+- Styled, secure context. Nav ×3.
+- Friendly error. Real scan (46). Demo (21). Hindi. Task check.
+- AI fixes 22 ($0.061). 21 → 0, all 3 can complete. Preview images over HTTPS.
+- Report + fixed HTML downloads. Contact form message. axe 0.
+- Tablet and mobile: no sideways scroll, styled.
+- **0 console errors** (the COOP warning from plain HTTP is gone). 0 failed requests.
+
+**Pre-switch safety test:** a temporary Caddy on port 443 only (TLS-ALPN-01) obtained a real Let's Encrypt cert while the live app kept serving on port 80 (HTTP 200 throughout). The container was removed afterwards.
+
+**Local Docker test of the new Caddyfile:** 1 HSTS header; `http://127.0.0.1` → 301 domain; `http://localhost` → 308 https; HTTPS 200.
+
 ## Not yet tested
 | Item | Blocker |
 |---|---|

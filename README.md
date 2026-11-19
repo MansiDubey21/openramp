@@ -6,6 +6,8 @@ OpenRamp is an AI accessibility fixer for small-business websites. It scans a pa
 
 Built for the GoDaddy Inclusive Innovation Hackathon 2026.
 
+**🌐 Live:** https://68-178-168-73.sslip.io (HTTPS on a GoDaddy VPS). The custom domain **https://openramp.in** takes over as soon as its registration and DNS are active.
+
 > Automated testing finds only some accessibility barriers. OpenRamp's results are not a WCAG conformance certificate or legal compliance advice.
 
 ## Why
@@ -50,10 +52,11 @@ node scripts/try-ai.js sample   # full AI pipeline on the demo site (uses API cr
 
 ## Deploy (Docker VPS)
 ```bash
-# on the server, with .env filled in (including DOMAIN)
-docker compose up -d --build
+# on the server, with .env filled in
+bash deploy/vps-setup.sh                    # once: Docker + firewall
+bash deploy/go-live.sh yourdomain.com       # waits for DNS → HTTPS via Caddy/Let's Encrypt, auto-rollback on failure
 ```
-Caddy obtains HTTPS certificates automatically once the domain's A record points to the server.
+Caddy (reverse proxy) obtains and renews Let's Encrypt certificates automatically, redirects HTTP→HTTPS, and redirects requests by IP to the domain. Security headers (CSP, HSTS, nosniff, …) are set by the app.
 
 ## Limitations
 One page per scan. Content rendered by the site's JavaScript is not scanned. Fixes are HTML-level patches to a copy, so the owner or their developer applies them in their site builder or CMS. Automated rules cover only part of WCAG.

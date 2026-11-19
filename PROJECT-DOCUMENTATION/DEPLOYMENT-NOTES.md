@@ -1,6 +1,19 @@
 # Deployment Notes: GoDaddy Docker VPS (Option B)
 
-## ✅ CURRENT STATUS (2026-11-19, 11:05 UTC): LIVE in "IP mode"
+## ✅ CURRENT STATUS (2026-11-19, 11:15 UTC): LIVE over HTTPS
+| Item | Value |
+|---|---|
+| Live URL | **https://68-178-168-73.sslip.io** (Let's Encrypt cert valid to 2027-02-17, auto-renewed by Caddy) |
+| Old IP link | `http://68.178.168.73/...` → 301 → the HTTPS domain (path kept) |
+| Stack | `openramp-app-1` (healthy, internal port 3000) + `openramp-caddy-1` (80/443 tcp, 443 udp), started by `deploy/go-live.sh` |
+| `.env` | `DOMAIN` set by go-live. Backup `.env.bak-golive-20261119111516` (600). `.env.save` kept |
+| openramp.in | **Not yet in the `.in` registry** (registry RDAP 404, `.in` nameservers NXDOMAIN at 11:10 UTC). Needs: registration to activate (check GoDaddy order / registrant email verification), then DNS **A `@` → 68.178.168.73** and **CNAME `www` → `@`** in GoDaddy DNS. Then: `cd ~/openramp && bash deploy/go-live.sh openramp.in` |
+| Auto-switch | Cron `*/5 * * * * cd $HOME/openramp && bash deploy/go-live.sh openramp.in --auto >> $HOME/go-live.log 2>&1` **not installed**: the Claude Code safety classifier blocked adding a recurring job. Waiting for the user's decision |
+| Contact form | Blocked on the Titan mailbox purchase (user rule: no purchases by Claude) |
+
+**Why sslip.io:** free public DNS mapping `68-178-168-73.sslip.io → 68.178.168.73`. It allows real HTTPS before `openramp.in` exists. A Let's Encrypt test on port 443 only (TLS-ALPN) was run first without touching the live app.
+
+## (Previous status, 11:05 UTC): LIVE in "IP mode"
 | Item | Value |
 |---|---|
 | Live URL | **http://68.178.168.73** (plain HTTP; HTTPS comes with the domain) |
