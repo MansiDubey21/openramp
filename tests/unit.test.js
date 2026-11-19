@@ -1,6 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isBlockedIp, validatePublicUrl, safeFetch } from '../src/safeFetch.js';
+import { isBlockedIp, validatePublicUrl, safeFetch, friendlyNetworkError } from '../src/safeFetch.js';
+
+test('network errors are explained in plain language (no bare error codes)', () => {
+  assert.match(friendlyNetworkError('ENOTFOUND'), /couldn't find that website/);
+  assert.ok(!friendlyNetworkError('ENOTFOUND').includes('ENOTFOUND'));
+  assert.match(friendlyNetworkError('ECONNREFUSED'), /refused/);
+  assert.match(friendlyNetworkError('SOMETHING_NEW'), /couldn't reach the website.*SOMETHING_NEW/);
+});
 import { checkContrast, suggestAccessibleColor, contrastRatio, parseColor } from '../src/contrast.js';
 import { validateFix } from '../src/fixAgent.js';
 import { compareReports } from '../src/report.js';

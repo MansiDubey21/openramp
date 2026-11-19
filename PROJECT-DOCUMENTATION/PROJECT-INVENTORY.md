@@ -45,8 +45,9 @@ _Actual files as of 2026-11-14 (end of session 2). Status labels: Completed and 
 ## Deployment and config
 | Path | Purpose | Status |
 |---|---|---|
-| `Dockerfile` | Playwright base image (tag verified to exist), non-root user, health check | Implemented but not tested (no Docker on this PC: virtualization disabled; first build will be on the VPS) |
-| `docker-compose.yml` | app + Caddy (automatic HTTPS). `init`, log rotation, 4 GB memory, Caddy waits for a healthy app | Validated (`config --quiet` with example env). Run not tested (no local Docker) |
+| `Dockerfile` | Playwright base image, non-root user, health check | Completed and tested (Docker Desktop, 19 Nov: builds, healthy, Chromium works in the container) |
+| `docker-compose.yml` | app + Caddy (automatic HTTPS). `init`, log rotation, 4 GB memory, Caddy waits for a healthy app | Completed and tested locally (19 Nov, DOMAIN=localhost: Caddyfile parses, HTTPS + redirect work). Real Let's Encrypt cert still to test on the VPS |
+| `docker-compose.local.yml` | **Local testing only**: publishes the app on 127.0.0.1:3000 | Completed and tested (19 Nov). Not for the VPS |
 | `deploy/vps-setup.sh` | One-time Docker + firewall setup on the Ubuntu/Debian VPS | Implemented but not tested (bash syntax OK) |
 | `deploy/deploy.sh` | Per-deploy: `.env` check without printing values, pull, build, health wait, DNS/HTTPS check | Implemented but not tested (bash syntax OK) |
 | `Caddyfile` | HTTPS reverse proxy, www redirect, HSTS | Implemented but not tested |

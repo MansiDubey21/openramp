@@ -69,6 +69,24 @@ function guardedLookup(hostname, options, callback) {
   });
 }
 
+/** Plain-language message for owners; the technical code is kept only at the end for support. */
+export function friendlyNetworkError(code) {
+  const messages = {
+    ENOTFOUND: "We couldn't find that website. Please check the address for typos.",
+    EAI_AGAIN: "We couldn't look up that website right now. Please check the address and try again.",
+    ECONNREFUSED: "The website refused the connection. It may be down. Please try again later.",
+    ECONNRESET: 'The website closed the connection unexpectedly. Please try again.',
+    ETIMEDOUT: 'The website took too long to respond.',
+    EHOSTUNREACH: "The website's server can't be reached right now.",
+    ENETUNREACH: "The website's server can't be reached right now.",
+    CERT_HAS_EXPIRED: "The website's security certificate has expired, so it can't be scanned safely.",
+    DEPTH_ZERO_SELF_SIGNED_CERT: "The website's security certificate isn't trusted, so it can't be scanned safely.",
+    UNABLE_TO_VERIFY_LEAF_SIGNATURE: "The website's security certificate isn't trusted, so it can't be scanned safely.",
+    ERR_TLS_CERT_ALTNAME_INVALID: "The website's security certificate doesn't match its address, so it can't be scanned safely.",
+  };
+  return messages[code] || `We couldn't reach the website. Please check the address and try again.${code ? ` (code: ${code})` : ''}`;
+}
+
 function requestOnce(url, { timeoutMs, maxBytes, accept }) {
   return new Promise((resolve, reject) => {
     const mod = url.protocol === 'https:' ? https : http;
@@ -127,7 +145,7 @@ function requestOnce(url, { timeoutMs, maxBytes, accept }) {
     req.on('timeout', () => req.destroy(new SafeFetchError('TIMEOUT', 'The website took too long to respond.')));
     req.on('error', (e) => {
       if (e instanceof SafeFetchError) return reject(e);
-      reject(new SafeFetchError('FETCH_FAILED', `Could not reach the website (${e.code || 'network error'}).`));
+      reject(new SafeFetchError('FETCH_FAILED', friendlyNetworkError(e.code)));
     });
     req.end();
   });

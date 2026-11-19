@@ -110,6 +110,39 @@ Bakery demo in Chromium: 21 fixes displayed with plain-language explanations and
 | Visible keyboard focus on nav button, URL field, Scan, Demo | Pass |
 | Bugs found and fixed during review | Mobile input icon misplaced. Sticky header covered headings. `[hidden]` could be overridden by CSS display |
 
+## Docker local test (2026-11-19). First real container run
+Docker Desktop became available. `docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build` with `DOMAIN=localhost`.
+| Check | Result |
+|---|---|
+| Image build | Succeeded (built 17 Nov; re-run all steps `CACHED`). Image 3.75 GB uncompressed |
+| `app` container | Up, **healthy** (Dockerfile HEALTHCHECK). Log: `OpenRamp listening…`, no errors |
+| `caddy` container | Up. Waited for app health. **Caddyfile parsed**, local certificate issued, `https://localhost/api/health` OK, `http://` → 308 → `https://` |
+| API + frontend against the container | 25/25 pass. Scan with **Chromium inside the container**: demo 21 issues (cold start 60 s, then 12–15 s), real URL 46 issues. Task check, Hindi summary, AI fixes (21, 0 rejected, $0.06), apply 21 → 0, task blocked → pass ×3, preview/fixed/report downloads, contact 503 (no mailbox) and 400 (invalid) |
+| SSRF from inside the Docker network | `127.0.0.1`, `localhost`, `169.254.169.254`, `host.docker.internal`, `caddy`, `app` (ports 80 and 3000): all blocked (400) |
+| Browser UI against the container | Nav links OK. Demo scan, task check, contact form OK. axe **0 violations**. No overflow at 820/390 px. **0 console errors, 0 failed requests** |
+| Observation | The rate limit (10 scans / 10 min per IP) was hit during automated testing (429). Working as designed. Could block a live demo or judges behind one shared IP. **Decision pending (user)** |
+| Observation | The first scan after a container start is slow (cold Chromium, ~60 s on this PC). Run one warm-up scan before demos |
+
+## Full feature review against the Docker container (2026-11-19)
+Browser end-to-end on http://localhost:3000 (container): **25/27 checks pass. The 2 "failures" were false alarms from the test itself** (a decorative hero glow is clipped by `overflow:hidden`. Verified at 820/390/360 px: page width equals screen width, no sideways scroll).
+| Area | Result |
+|---|---|
+| Scan edge cases | Empty URL, private IP, unreachable domain, URL typed without `https://` (46 issues): all handled |
+| Demo bakery | 21 issues. Stepper step 1. Accordion shows evidence |
+| Hindi explanation | Devanagari, `lang="hi"`, Play button |
+| Custom cake task | Too-short task message. 3 verdicts (all blocked). Transcript + Play. Keyboard-test fix added |
+| AI fixes | 22 (21 AI + 1 keyboard test), $0.061. Stepper step 2. "Select none → Apply" shows a helpful message |
+| Apply + verify | 21 → 0. Task: all 3 can complete. Stepper step 3. Preview renders |
+| Downloads (file contents checked) | Report (disclaimer, before/after, task section, Hindi summary). Fixed HTML (`lang="en"`, aria-labels, focus-fix style) |
+| Accessibility / console | axe 0 violations with all panels open. 0 console errors |
+
+**Real issues found and fixed:**
+1. Mobile before/after table: fixed 110 px number columns squeezed issue names. Now 64 px on phones.
+2. Mobile stepper: the current step's label wrapped to 3 lines (tall sticky bar). Now one line, smaller.
+3. Error message showed a bare code ("ENOTFOUND"). Now plain language ("We couldn't find that website. Please check the address for typos.") via `friendlyNetworkError()`, with a new unit test.
+
+**Test-infrastructure issue found:** with Docker Desktop running, server startup took ~17 s (was 1–2 s), so parallel test files timed out (10 false failures). Fix: `npm test` now runs files one at a time (`--test-concurrency=1`) and test servers get 60 s to start. Result **30/30**.
+
 ## Not yet tested
 | Item | Blocker |
 |---|---|

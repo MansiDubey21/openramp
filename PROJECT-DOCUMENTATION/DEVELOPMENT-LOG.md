@@ -99,6 +99,16 @@
   - axe 0 violations with all panels shown. No horizontal overflow at 820/390 px. Focus rings visible. No console errors.
   - `npm test` 29/29.
 
+## 2026-11-17 to 19: Session 9 (Docker local testing)
+- User: Docker Desktop is now running; GoDaddy credits and VPS are available. Asked for local Docker testing first, with no deployment.
+- Created `docker-compose.local.yml` (local-only port 127.0.0.1:3000).
+- 17 Nov: the first build pulled the ~2 GB Playwright base at about 5 Mbit/s. The download was measured as progressing, not stuck. The build completed, but the Claude session ended before the notification arrived.
+- 19 Nov: diagnosed. No build running, and the image already existed. `up -d --build` with `DOMAIN=localhost`: all steps CACHED, Caddy pulled. Slowness came from unpacking the 3.75 GB image on this PC, not from errors.
+- Both containers up, app healthy, Caddy HTTPS + redirect OK. 25/25 API checks, full browser UI check, SSRF checks inside the Docker network. Details in TESTING-REPORT.
+- Hit the scan rate limit during testing (429): restarted the app container to reset it. Raised as a question for the user (demo/judges).
+- Opened http://localhost:3000 for the user's review. Nothing deployed, purchased or pushed.
+- User asked for a full feature review against Docker. Ran an end-to-end browser review (see TESTING-REPORT). Fixed: the mobile compare table, the mobile stepper wrap, and plain-language network errors. Test runner now sequential with a 60 s server wait (load from Docker Desktop). `npm test` 30/30. Rebuilt the app image with the fixes (dependency layers cached).
+
 ## 2026-11-16: Session 8 (local restart + deployment preparation)
 - Restarted locally (`npm start`). 24/24 frontend and API checks passed. The user confirmed all 8 browser tests.
 - Deployment prep:

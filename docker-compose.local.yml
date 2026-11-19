@@ -1,0 +1,9 @@
+# LOCAL TESTING ONLY. Do not use on the VPS.
+# Adds a direct port for the app so it can be opened at http://localhost:3000 on this PC.
+# Usage (PowerShell):
+#   docker compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
+#   $env:DOMAIN='localhost'  (before "up") also tests Caddy at https://localhost with a local self-signed certificate
+services:
+  app:
+    ports:
+      - "127.0.0.1:3000:3000"   # bound to this PC only, not exposed to the network

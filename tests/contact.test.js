@@ -48,7 +48,7 @@ before(async () => {
     },
     stdio: 'pipe',
   });
-  for (let i = 0; i < 150; i++) {
+  for (let i = 0; i < 300; i++) { // up to 60 s under heavy load (e.g. Docker Desktop running)
     try {
       if ((await fetch(`${BASE}/api/health`)).ok) return;
     } catch { /* starting */ }

@@ -9,7 +9,7 @@ let proc;
 
 before(async () => {
   proc = spawn(process.execPath, ['src/server.js'], { env: { ...process.env, PORT: String(PORT), ANTHROPIC_API_KEY: '', SMTP_HOST: '' }, stdio: 'pipe' });
-  for (let i = 0; i < 150; i++) { // up to 30 s: startup is slower when the machine is under load
+  for (let i = 0; i < 300; i++) { // up to 60 s: startup is much slower while Docker Desktop is running
     try {
       if ((await fetch(`${BASE}/api/health`)).ok) return;
     } catch { /* not up yet */ }
